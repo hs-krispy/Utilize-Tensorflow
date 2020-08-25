@@ -74,3 +74,34 @@ for step in range(2001):
 
 결과적으로 2000번 학습을 진행했을때 **최적의 가중치와 편향의 값**은 위와 같음 
 
+### 다차원 데이터
+
+```python
+import tensorflow as tf
+x_data = [[73., 80., 75.], [93., 88., 93.], [89., 91., 90.], [96., 98., 100.], [73., 66., 70.]]
+y_data = [[152.], [185.], [180.], [196.], [142.]]
+X = tf.placeholder(tf.float32, shape=[None, 3]) 
+# None - 행의 데이터는 원하는 만큼 가능
+Y = tf.placeholder(tf.float32, shape=[None, 1])
+W = tf.Variable(tf.random_normal([3, 1]), name="weight")
+b = tf.Variable(tf.random_normal([1]), name="bias")
+hypothesis = tf.matmul(X, W) + b # 행렬 곱
+cost = tf.reduce_mean(tf.square(hypothesis - Y))
+optimizer = tf.train.GradientDescentOptimizer(learning_rate=1e-5)
+train = optimizer.minimize(cost)
+sess = tf.Session()
+sess.run(tf.global_variables_initializer())
+for step in range(2001):
+    cost_val, hy_val, _ = sess.run([cost, hypothesis, train], feed_dict={X: x_data, Y: y_data})
+    if step % 10 == 0:
+        print(step, "Cost: ", cost_val, "\nPrediction\n", hy_val)
+```
+
+다음과 같은 방법으로 다차원 데이터도 학습이 가능
+
+<img src="https://user-images.githubusercontent.com/58063806/91130584-d2b27a00-e6e6-11ea-99b3-f69aafc4e3c5.PNG" width=25% />
+
+<img src="https://user-images.githubusercontent.com/58063806/91130585-d3e3a700-e6e6-11ea-836c-a2808db49841.PNG" width=25% />
+
+학습을 진행할수록 **손실함수의 값이 작아짐과 동시에 예측값이 정답과 유사해지는 것**을 볼 수 있음
+
