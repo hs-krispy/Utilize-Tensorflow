@@ -133,7 +133,7 @@ with tf.Session() as sess:
     print("Accuarcy: ", accuracy.eval(feed_dict={X: mnist.test.images, Y: mnist.test.labels}))
 ```
 
-![]()
+<img src="https://user-images.githubusercontent.com/58063806/92308012-7d734400-efd5-11ea-8968-2cff769b6fa1.JPG" width=30% />
 
 #### Dropout for MNIST
 
@@ -186,7 +186,6 @@ with tf.Session() as sess:
     print("Accuarcy: ", accuracy.eval(feed_dict={X: mnist.test.images, Y: mnist.test.labels, keep_prob: 1}))
 ```
 
-<img src="https://user-images.githubusercontent.com/58063806/92307662-e7d6b500-efd2-11ea-8969-e4cb18a3a893.JPG" width=30% />
+<img src="https://user-images.githubusercontent.com/58063806/92308030-9f6cc680-efd5-11ea-9463-436ea960d1cf.JPG" width=30% />
 
- 오버피팅 방지를 위해 Dropout을 함으로써 정확도가 다시 올라가는 것을 볼 수 있음
-
+ 오버피팅 방지를 위해 Dropout을 함으로써 정확도가 올라가는 것을 볼 수 있음
