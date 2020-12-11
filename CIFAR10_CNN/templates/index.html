@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>
+    function get_url()
+    {
+        var URL = document.getElementById("input").value;
+        document.getElementById("image").src = URL;
+    }
+    </script>
+    <style type="text/css">
+        .my-box { border:1px solid; border-color: blue; background-color: darkseagreen; padding:10px;}
+    </style>
+    <title>Image classification</title>
+</head>
+<body>
+    <form method="POST" action="/load_image">
+        <div class="my-box">
+            <div>Image URL</div>
+           <input type="text" name="url" id="input">
+           <input type="submit" value="Push image url" onclick="get_url()">
+            <br><br>
+            <img id=image>
+            <img src={{url}}>
+        </div>
+    </form>
+    <h3>This image is {{res}}</h3>
+</body>
+</html>
+
