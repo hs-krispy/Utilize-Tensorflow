@@ -7,7 +7,7 @@ def preprocessing(path, X, y):
     img_list = os.listdir(path)
     for img_name in img_list:
         img_path = path + '/' + img_name
-        img = image.load_img(img_path, target_size=(150, 150))
+        img = image.load_img(img_path, color_mode="grayscale", target_size=(150, 150))
         img_tensor = image.img_to_array(img)
         X.append(img_tensor)
         if path.split("/")[-1] == "NORMAL":
@@ -40,18 +40,21 @@ preprocessing(train_normal_path, X_train, y_train)
 preprocessing(train_pneumonia_path, X_train, y_train)
 X_train = np.array(X_train)
 y_train = np.array(y_train)
-X_train = X_train / 255.0
 
 preprocessing(val_normal_path, X_val, y_val)
 preprocessing(val_pneumonia_path, X_val, y_val)
 X_val = np.array(X_val)
 y_val = np.array(y_val)
-X_val = X_val / 255.0
 
 preprocessing(test_normal_path, X_test, y_test)
 preprocessing(test_pneumonia_path, X_test, y_test)
 X_test = np.array(X_test)
 y_test = np.array(y_test)
-X_test = X_test / 255.0
+
+X_train_mean = np.mean(X_train)
+X_train_std = np.std(X_train)
+X_train = (X_train - X_train_mean) / X_train_std
+X_val = (X_val - X_train_mean) / X_train_std
+X_test = (X_test - X_train_mean) / X_train_std
 
 save_data(X_train, X_val, X_test, y_train, y_val, y_test)
