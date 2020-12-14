@@ -37,10 +37,9 @@ keras의 ImageDataGenerator를 이용해서 데이터의 개수를 증폭
 - width_shift_range - 지정된 수평방향 범위내에서 임의로 원본이미지를 이동
 - height_shift_range - 지정된 수직방향 이동 범위내에서 임의로 원본이미지를 이동
 - zoom_range - 지정된 확대/축소 범위내에서 임의로 원본이미지를 확대/축소 (위의 경우는 0.5 ~ 1.5)
-
 - brightness_range - 지정된 밝기 범위내에서 임의로 원본이미지의 밝기를 변화 (위의 경우는 0.5 ~ 1.5)
-
 - [이 외 parameters](https://keras.io/ko/preprocessing/image/)
+- evaluate_generator()를 통해서 데이터 생성기 상에서 모델을 평가
 
 **변형된 이미지**
 
