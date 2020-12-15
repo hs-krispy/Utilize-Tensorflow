@@ -66,3 +66,32 @@ history = model.fit_generator(train_data, steps_per_epoch=len(X_train) // batch_
 EarlyStopping - **기준 지표(위에서는 loss)를 대상**으로 **지정된 epoch(위에서는 5) 동안 개선이 없으면 학습을 종료**시킴
 
 ModelCheckpoint - 기준 지표의 값(위에서는 loss)이 이전 epoch에 비해 개선된 경우 filepath에 해당하는 경로에 모델을 저장함 (그러므로 학습이 중지되었을때 기준 지표에서 가장 좋은 성능의 모델을 반환가능)
+
+#### Image transform
+
+**Bilateral filter**
+
+```python
+img = image.load_img(img_path, color_mode="grayscale", target_size=(150, 150))
+        img_tensor = image.img_to_array(img)
+        img_tensor = cv2.bilateralFilter(img_tensor, d=-1, sigmaColor=15, sigmaSpace=15)
+        img_tensor = img_tensor.reshape(150, 150, 1)
+```
+
+이미지를 좀 더 부드럽게 만들고 동시에 폐의 크기와 혼탁한 부분에 대한 경계를 좀 더 잘 나타낼 수 있도록 이미지를 스무딩 해주면서 경계는 보존하는 Bilateral filter를 적용
+
+<img src="https://user-images.githubusercontent.com/58063806/102227143-91133c80-3f2c-11eb-9868-e4c7d0a2296d.png" width=90% />
+
+parameter에 따라 차이는 있지만 전반적으로 원본 이미지에 비해 경계가 잘 나뉘어 진 것을 볼 수 있음
+
+**Crop**
+
+```python
+img = image.load_img(img_path, color_mode="grayscale", target_size=(150, 150))
+        img_tensor = image.img_to_array(img)
+        img_tensor = img_tensor[40: 130, 50: 130]
+```
+
+원본 이미지에서 폐렴을 판별하는데에 필요하다고 생각되는 임의의 영역만 잘라냄
+
+<img src="https://user-images.githubusercontent.com/58063806/102228760-66c27e80-3f2e-11eb-82d1-fa0415b607ab.png" width=90% />
