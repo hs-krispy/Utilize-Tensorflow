@@ -41,7 +41,7 @@ keras의 ImageDataGenerator를 이용해서 데이터의 개수를 증폭
 - [이 외 parameters](https://keras.io/ko/preprocessing/image/)
 - evaluate_generator()를 통해서 데이터 생성기 상에서 모델을 평가
 
-**변형된 이미지**
+**새로 생성된 이미지**
 
 ```python
 fig = plt.figure(figsize=(30, 30))
@@ -61,13 +61,14 @@ callbacks = [EarlyStopping(monitor='loss', patience=5),
              ModelCheckpoint(filepath='best_model.h5', verbose=1, monitor='loss', save_best_only=True)]
 
 history = model.fit_generator(train_data, steps_per_epoch=len(X_train) // batch_size, epochs=epoch, verbose=1, validation_data=val_data, callbacks=callbacks)
+# history = model.fit(train_data, steps_per_epoch=len(X_train) // batch_size, epochs=epoch, verbose=1, class_weight={0:3.0, 1:1.0}, validation_data=(X_val, y_val), callbacks=callbacks)
 ```
 
 EarlyStopping - **기준 지표(위에서는 loss)를 대상**으로 **지정된 epoch(위에서는 5) 동안 개선이 없으면 학습을 종료**시킴
 
 ModelCheckpoint - 기준 지표의 값(위에서는 loss)이 이전 epoch에 비해 개선된 경우 filepath에 해당하는 경로에 모델을 저장함 (그러므로 학습이 중지되었을때 기준 지표에서 가장 좋은 성능의 모델을 반환가능)
 
-#### Image transform
+### Image transform
 
 **Bilateral filter**
 
