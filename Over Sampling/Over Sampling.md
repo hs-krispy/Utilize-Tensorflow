@@ -14,13 +14,11 @@
 - #### SMOTE
 
   - 먼저 소수 클래스에서 임의의 데이터를 선택하고 해당 데이터에 대한 k- 최근 접 이웃을 설정, 그런 다음 임의의 데이터와 무작위로 선택된 k- 최근 접 이웃 사이에 합성 데이터를 생성 (소수 클래스의 데이터가 지정된 비율이 될 때 까지 반복) 
-  - <img src="C:\Users\0864h\AppData\Roaming\Typora\typora-user-images\image-20201230220229833.png" width=40% />
+  - <img src="https://user-images.githubusercontent.com/58063806/103411943-3d545480-4bb6-11eb-99da-c91f63ac240e.png" width=50% />
 
   - [이미지 출처](https://towardsdatascience.com/5-smote-techniques-for-oversampling-your-imbalance-data-b8155bdbe2b5)
 
-  <img src="C:\Users\0864h\AppData\Roaming\Typora\typora-user-images\image-20201230220315406.png" width=50% />
-
-  
+  <img src="https://user-images.githubusercontent.com/58063806/103411926-21e94980-4bb6-11eb-95f8-26f2c32e979c.png" width=50% />
 
 - #### SMOTE-NC
 
