@@ -47,7 +47,7 @@
 
   - K-Means 알고리즘을 이용해 데이터를 군집화 시킴
   - 소수 클래스 데이터가 많이 속해 있는 클러스터에서 더 많은 합성 데이터를 생성하게 함
-  - <img src="C:\Users\0864h\AppData\Roaming\Typora\typora-user-images\image-20201230221011262.png" width=60% />
+  - <img src="https://user-images.githubusercontent.com/58063806/103412014-860c0d80-4bb6-11eb-8662-bac67c9b4264.png" width=60% />
   - [이미지 출처](https://www.researchgate.net/figure/K-means-SMOTE-oversamples-safe-areas-and-combats-within-class-imbalance-3_fig2_320821366)
 
   <img src="https://user-images.githubusercontent.com/58063806/103353305-dd917700-4aeb-11eb-8d0f-dfdc5f2b1bab.png" width=50% />
