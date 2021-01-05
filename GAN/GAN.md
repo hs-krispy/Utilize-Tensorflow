@@ -9,7 +9,17 @@
 
 <img src="https://user-images.githubusercontent.com/58063806/103435075-3af10980-4c4d-11eb-8200-d5f5b302abdb.png" width=70% />
 
-[이미지 출처](https://hyeongminlee.github.io/post/gan001_gan/)
+- **실제 데이터의 분포와 모델이 생성한 데이터의 분포 사이의 차이를 줄이는 것**
+
+<img src="https://user-images.githubusercontent.com/58063806/103655223-496f5600-4faa-11eb-8e29-f14b2966b5e5.png" width=70% />
+
+검은색 점선 - 실제 데이터의 분포
+
+파란색 점선 - 판별기 분포 (계속 학습을 진행하다보면 나중에는 0.5로 수렴)
+
+초록색 선 - 위조 데이터의 분포 (실제 데이터의 분포와 유사하도록 해야함)
+
+[이미지 출처](https://yamalab.tistory.com/98)
 
 
 
