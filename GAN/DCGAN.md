@@ -79,20 +79,21 @@ from PIL import Image
             model.add(Reshape((8, 8, 128)))
             # UpSampling2D - 이미지의 열과 행을 두배로 증가
             model.add(UpSampling2D()) # 16, 16, 128
-            model.add(Conv2DTranspose(128, kernel_size=3, padding="same"))
-            model.add(BatchNormalization(momentum=0.8))
-            model.add(Activation("relu"))
-            model.add(UpSampling2D()) # 32, 32, 128
-            model.add(Conv2DTranspose(128, kernel_size=3, padding="same"))
-            model.add(BatchNormalization(momentum=0.8))
-            model.add(Activation("relu"))
-            model.add(UpSampling2D()) # 64, 64, 128
-            model.add(Conv2DTranspose(256, kernel_size=3, padding="same"))
-            model.add(BatchNormalization(momentum=0.8))
-            model.add(Activation("relu"))
-            # 64, 64, 256
-            model.add(Conv2DTranspose(self.channels, kernel_size=3, padding="same"))
-            model.add(Activation("tanh"))
+            model.add(Conv2DTranspose(64, kernel_size=3, padding="same", activation="relu"))
+        model.add(BatchNormalization(momentum=0.8))
+        model.add(UpSampling2D()) 
+        model.add(Conv2DTranspose(128, kernel_size=3, padding="same", activation="relu"))
+        model.add(BatchNormalization(momentum=0.8))
+        # 32, 32, 128
+        model.add(Conv2DTranspose(128, kernel_size=3, padding="same", activation="relu"))
+        model.add(BatchNormalization(momentum=0.8))
+        # 32, 32, 128
+        model.add(UpSampling2D()) 
+        model.add(Conv2DTranspose(256, kernel_size=3, padding="same", activation="relu"))
+        model.add(BatchNormalization(momentum=0.8))
+        # 64, 64, 256
+        model.add(Conv2DTranspose(self.channels, kernel_size=3, padding="same", activation="tanh"))
+        # 64, 64, 3
 
             model.summary()
             # 노이즈
@@ -109,23 +110,19 @@ generator (생성기)를 구성
    def build_discriminator(self):
         model = Sequential()
 
-        model.add(Conv2D(64, kernel_size=3, strides=2, input_shape=self.img_shape, padding="same"))
+        model.add(Conv2D(64, kernel_size=3, strides=2, input_shape=self.img_shape, padding="same", activation=LeakyReLU(alpha=0.2)))
+        model.add(Dropout(0.25))
         # 32, 32, 64
-        model.add(LeakyReLU(alpha=0.2))
-        model.add(Dropout(0.25))
-        model.add(Conv2D(64, kernel_size=3, strides=2, padding="same"))
-        # 16, 16, 64
+        model.add(Conv2D(128, kernel_size=3, strides=2, padding="same", activation=LeakyReLU(alpha=0.2)))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(LeakyReLU(alpha=0.2))
         model.add(Dropout(0.25))
-        model.add(Conv2D(128, kernel_size=3, strides=2, padding="same"))
+        # 16, 16, 128
+        model.add(Conv2D(128, kernel_size=3, strides=2, padding="same", activation=LeakyReLU(alpha=0.2)))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(LeakyReLU(alpha=0.2))
         model.add(Dropout(0.25))
         # 8, 8, 128
-        model.add(Conv2D(256, kernel_size=3, strides=1, padding="same"))
+        model.add(Conv2D(256, kernel_size=3, strides=1, padding="same", activation=LeakyReLU(alpha=0.2)))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(LeakyReLU(alpha=0.2))
         model.add(Dropout(0.25))
         # 8, 8, 256
         model.add(Flatten())
@@ -185,13 +182,20 @@ discriminator (판별기)를 구성
                 print ("%d [D loss: %f, acc.: %.2f%%] [G loss: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss))
                     
             if epoch % save_interval == 0:
-                # 1 에폭 당 각 loss의 평균값
                 g_loss_mean /= batchCount
                 d_loss_mean /= batchCount
                 self.G_losses.append(g_loss_mean)
                 self.D_losses.append(d_loss_mean)
                 self.x.append(epoch)
                 self.save_imgs(epoch)
+                continue
+            
+            if epoch % 10 == 0:
+                g_loss_mean /= batchCount
+                d_loss_mean /= batchCount
+                self.G_losses.append(g_loss_mean)
+                self.D_losses.append(d_loss_mean)
+                self.x.append(epoch)
 ```
 
 학습 과정을 구성
@@ -236,7 +240,7 @@ def show_loss(self):
 
 ```python
 dcgan = DCGAN(64, 64, 3)
-dcgan.train(epochs=300, batch_size=64, save_interval=30)
+dcgan.train(epochs=500, batch_size=64, save_interval=50)
 dcgan.show_loss()
 ```
 
@@ -244,23 +248,25 @@ dcgan.show_loss()
 
 **Epoch 0**
 
-<img src="https://user-images.githubusercontent.com/58063806/104996175-bedb2c00-5a6a-11eb-998f-41f2194049e0.png" width=50% />
+<img src="https://user-images.githubusercontent.com/58063806/105186268-e3232f80-5b74-11eb-9fcc-c7275d874c0b.png" width=50% />
 
-**Epoch 30**
 
-<img src="https://user-images.githubusercontent.com/58063806/104996178-c1d61c80-5a6a-11eb-828e-141ce98ad67a.png" width=50%/>
 
-**Epoch 60**
+**Epoch 50**
 
-<img src="https://user-images.githubusercontent.com/58063806/104996181-c39fe000-5a6a-11eb-8b85-677b2a8a446d.png" width=50% />
+<img src="https://user-images.githubusercontent.com/58063806/105186436-11087400-5b75-11eb-8660-f14781769e95.png" width=50% />
 
 **Epoch 150**
 
-<img src="https://user-images.githubusercontent.com/58063806/104996466-45900900-5a6b-11eb-9a78-641ee962dd7d.png" width=50% />
+<img src="https://user-images.githubusercontent.com/58063806/105187123-c5a29580-5b75-11eb-823e-fc9b1fc0a6dd.png" width=50% />
 
-**Epoch 270**
+**Epoch 300**
 
-<img src="https://user-images.githubusercontent.com/58063806/105001795-a7ed0780-5a73-11eb-8f11-3f23c2dd013f.png" width=50% />
+<img src="https://user-images.githubusercontent.com/58063806/105186860-79575580-5b75-11eb-9f52-1faa3f671193.png" width=50% />
+
+**Epoch 450**
+
+<img src="https://user-images.githubusercontent.com/58063806/105186991-9f7cf580-5b75-11eb-82dc-5bffd5f3bb69.png" width=50% />
 
 
 
@@ -268,7 +274,7 @@ dcgan.show_loss()
 
 <img src="https://user-images.githubusercontent.com/58063806/105002868-4332ac80-5a75-11eb-8caa-ff545e7c2332.png" width=60% />
 
-- g_loss는 감소하고 d_loss는 증가하는 추세를 보임 
+- g_loss는 감소하다가 증가하고 d_loss는 증가하다가 감소하는 추세를 보임 
 - 점점 더 가짜 이미지가 진짜 이미지와 유사해지고 있는 모습을 볼 수 있음
 - 두 loss가 0.5에 수렴하는 것이 이상적
-- epoch을 더 크게 할 필요가 있음
+- Discirminator가 더 우세하게 학습하는 경향이 나타나므로 epoch이 더 커지면 이상적인 결과가 나오지 않을 수 있음 
