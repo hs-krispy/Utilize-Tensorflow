@@ -2,6 +2,16 @@
 
 ##### Deep Convolutional Generative Adversarial Networks with Face dataset
 
+#### latent space (잠재 공간)
+
+- 직접 해석할 수는 없지만 관찰된 이벤트의 의미있는 내부 표현을 인코딩하는 특성 값을 포함 하는 추상적인 다차원 공간
+
+- GAN에서 generator가 가짜 이미지를 생성하기 위한 noise가 latent space의 latent variable이라고 생각
+- noise를 점점 기존 image의 분포와 유사하도록 학습
+
+- 잠재 공간의 변수들이 이미지의 특징들을 구분
+- GAN에서는 실제 데이터의 분포에 근접한 잠재 공간을 얻는 것을 목표로 함
+
 ### class 구성
 
 ```python
@@ -272,7 +282,7 @@ dcgan.show_loss()
 
 ### Loss 변화 시각화
 
-<img src="https://user-images.githubusercontent.com/58063806/105002868-4332ac80-5a75-11eb-8caa-ff545e7c2332.png" width=60% />
+<img src="https://user-images.githubusercontent.com/58063806/105363313-3eb9ef80-5c3f-11eb-813f-79b25153ff33.png" width=70% />
 
 - g_loss는 감소하다가 증가하고 d_loss는 증가하다가 감소하는 추세를 보임 
 - 점점 더 가짜 이미지가 진짜 이미지와 유사해지고 있는 모습을 볼 수 있음
