@@ -89,10 +89,10 @@ def cross_val(x, y):
         # LSGAN 생성 데이터
         # train_x, valid_x = x.iloc[train_idx], x.iloc[valid_idx]
         # train_y, valid_y = y.iloc[train_idx], y.iloc[valid_idx]
-        # select = np.random.randint(0, 100000, 80000)
+        # select = np.random.RandomState(42).randint(0, 100000, 80000)
         # train_x = pd.concat([train_x, additional_data.iloc[select]], axis=0, ignore_index=True)
         # train_y = pd.concat([train_y, additional_y.iloc[select]], axis=0, ignore_index=True)
-        # train_x, train_y = shuffle(train_x, train_y)
+        # train_x, train_y = shuffle(train_x, train_y, random_state=42)
 		train_y = np.ravel(train_y)
         valid_y = np.ravel(valid_y)
         evals = [(valid_x, valid_y)]
