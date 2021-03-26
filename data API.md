@@ -50,10 +50,33 @@ prefetch -  이전의 data가 학습 중일때 다음 data를 미리 load (마�
 
 dataset을 계속 반복해서 생성
 
-#### take
+#### take, skip
 
 ```python
-train_data.batch(batch_size).take(n)
+train_data.take(n)
+new_data = train_data.skip(n)
 ```
 
-batch size 만큼 n개의 data만 불러옴
+take - n개의 data만 불러옴 (train_data[:n])
+
+skip - train_data의 앞 n개의 데이터를 스킵 (new_data = train_data[n:])
+
+#### flow_from_directory
+
+- 제너레이터 생성 (iterator 처럼 작동)
+- 폴더명에 맞춰 자동으로 labeling
+- 전체 데이터를 한번에 불러오는 것이 아니므로 메모리 관리에 효율적
+
+```python
+train_datagen = ImageDataGenerator(rescale=1./255)
+test_datagen = ImageDataGenerator(rescale=1./255)
+
+train_generator = train_datagen.flow_from_directory(train_dir, target_size=(150, 150), batch_size=32, class_mode="binary")
+validation_generator = test_datagen.flow_from_directory(validation_dir, target_size=(150, 150), batch_size=32, class_mode="binary")
+
+history = model.fit_generator(train_generator, steps_per_epoch=100, epochs=30, validation_data=validation_generator, validation_steps=50, verbose=1)
+```
+
+제너레이터는 배치를 무한정 만들어내기 때문에 fit_generator 시에 **steps_per_epoch으로 한 epoch에 batch를 몇 번 불러올 것**인지 설정 (validation_steps도 같은 맥락)
+
+> fit_generator는 multiprocessing이 가능
